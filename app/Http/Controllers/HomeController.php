@@ -39,7 +39,7 @@ class HomeController extends Controller
          'team_2_wicket',
          'team_1_over',
          'team_2_over'
-    ));
-		 
-	}	
+    ));	 
+	}
+    
 }

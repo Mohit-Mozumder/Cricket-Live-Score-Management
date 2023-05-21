@@ -21,14 +21,14 @@ class CreateScoresTable extends Migration
             $table->integer('non_strike_player_id');
             $table->float('over');
             $table->integer('bowler_id');
-            $table->integer('out_player_id');
-            $table->integer('wicket_taker_id');
-            $table->float('bowling_speed');
-            $table->integer('noball');
-            $table->integer('wide');
-            $table->integer('legby');
+            $table->integer('out_player_id')->nullable();
+            $table->integer('wicket_taker_id')->nullable();
+            $table->float('bowling_speed')->nullable();
+            $table->integer('noball')->nullable();
+            $table->integer('wide')->nullable();
+            $table->integer('legby')->nullable();
             $table->integer('current_score');
-            $table->integer('user_id');
+            $table->integer('user_id')->nullable();
             $table->timestamps();
         });
     }

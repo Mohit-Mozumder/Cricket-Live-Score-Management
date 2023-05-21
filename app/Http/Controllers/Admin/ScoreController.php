@@ -7,6 +7,7 @@ use App\Models\Score;
 use App\Models\Match;
 use App\Models\Player;
 use App\Models\Team;
+use Auth;
 
 class ScoreController extends Controller
 {
@@ -29,19 +30,79 @@ class ScoreController extends Controller
      */
     public function create(Request $request)
     {
-        // $matches = Match::find($request->match_id);
-        // $teams  = Team::where('id', $matches->team_1)
-        //                 -> orwhere('id', $matches->team_2)
-        //                 -> get();
-        // $players = Player::where('team_id', $matches->team_1)
-        //                    -> orwhere('team_id', $matches->team_2)
-        //                    -> get();
-
-         $matches = Match::findOrFail($request->match_id);
-         $teams = Team::whereIn('id', [$matches->team_1, $matches->team_2])->get();
-         $players = Player::where('team_id', $matches->team_1)->orWhere('team_id', $matches->team_2)->get();
-        return view('admin.scores.create', compact('matches','teams','players'));
+        $match = Match::findOrFail($request->match_id);
+        $teams = Team::whereIn('id', [$match->team_1, $match->team_2])->get();
+        $players = Player::where('team_id', $match->team_1)->orWhere('team_id', $match->team_2)->get();
+        
+        $getLastRow = Score::where('match_id', $match->id)->latest()->first();
+        $team1Batting = Score::where('match_id', $match->id)
+            ->where('batting_team_id', $match->team_1)
+            ->latest('over')
+            ->first();
+    
+        $team2Batting = Score::where('match_id', $match->id)
+            ->where('batting_team_id', $match->team_2)
+            ->latest('over')
+            ->first();
+    
+        $team1Overs = ($team1Batting) ? $this->calculateNextOver($team1Batting->over, $team1Batting->wide, $team1Batting->no_ball) : '0.1';
+        $team2Overs = ($team2Batting) ? $this->calculateNextOver($team2Batting->over, $team2Batting->wide, $team2Batting->no_ball) : '0.1';
+    
+        $team1TotalScore = Score::where('match_id', $match->id)
+            ->where('batting_team_id', $match->team_1)
+            ->sum('current_score');
+    
+        $team2TotalScore = Score::where('match_id', $match->id)
+            ->where('batting_team_id', $match->team_2)
+            ->sum('current_score');
+    
+        $team1Wickets = Score::where('match_id', $match->id)
+            ->where('batting_team_id', $match->team_1)
+            ->whereNotNull('out_player_id')
+            ->count();
+    
+        $team2Wickets = Score::where('match_id', $match->id)
+            ->where('batting_team_id', $match->team_2)
+            ->whereNotNull('out_player_id')
+            ->count();
+    
+        return view('admin.scores.create', compact(
+            'match',
+            'teams',
+            'players',
+            'team1Overs',
+            'team2Overs',
+            'team1TotalScore',
+            'team2TotalScore',
+            'team1Wickets',
+            'team2Wickets',
+            'getLastRow'
+        ));
     }
+    
+    
+    
+    
+    
+    private function calculateNextOver($currentOver, $isWide, $isNoBall)
+    {
+        if ($isWide || $isNoBall) {
+            // Return the same over without incrementing if it's a wide or no ball
+            return $currentOver;
+        }
+    
+        // Split the current over into balls and increment accordingly
+        [$over, $ball] = explode('.', $currentOver);
+        if ($ball == 6) {
+            $over++;
+            $ball = 1;
+        } else {
+            $ball++;
+        }
+    
+        return $over . '.' . $ball;
+    }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -56,22 +117,19 @@ class ScoreController extends Controller
             'strike_player_id' => ['required'],
             'non_strike_player_id' => ['required'],
             'over' => ['required'],
-            'out_player_id' => ['required'],
-            'wicket_taker_id' => ['required'],
-            'noball' => ['required'],
-            'wide' => ['required'], 
-            'legby' => ['required'],
-            'current_score' => ['required'],
-            'user_id' => ['required'],
-            
+            'current_score' => ['required']
         ]);
 
-        if (Score::create($request->all())) {
-            return redirect(route('admin.scores.create'))->with(['success' => 'Score added successfully']);
+        $scoreData = $request->all();
+        $scoreData['user_id'] = Auth::id(); // Get the ID of the currently authenticated user
+    
+        if (Score::create($scoreData)) {
+            return redirect(route('admin.scores.create', ['match_id' => $request->match_id]))->with(['success' => 'Score added successfully']);
         } else {
             return back()->with(['error' => 'Something went wrong!!! Please try again']);
         }
     }
+    
 
     /**
      * Display the specified resource.

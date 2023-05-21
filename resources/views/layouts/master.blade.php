@@ -105,7 +105,7 @@
                 <div id="card3" class="card">
                     <div id="cardInner">
                         <div>
-                            <h5 style="margin: 0px 15px 0px 0px;color: rgb(36, 26, 26);" id="type2">Upcomming</h5>
+                            <h5 style="margin: 0px 15px 0px 0px;color: rgb(36, 26, 26);" id="type2">International</h5>
                         </div>
                         <div>
                             <h5 style="margin: 3px 15px 0px 0px;font-size: .7rem;color: rgb(151, 149, 149);" id="vs">
