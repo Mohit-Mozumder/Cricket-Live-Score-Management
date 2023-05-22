@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Player;
 use App\Models\Team;
+use App\Models\Match;
 
 class PlayerController extends Controller
 {
@@ -16,7 +17,9 @@ class PlayerController extends Controller
     public function index()
     {
         $players = Player::all();
-        return view('frontend.player.index', compact('players'));
+        $latestMatches = Match::orderBy('created_at', 'desc')->take(4)->get(['result']);
+
+        return view('frontend.player.index', compact('players', 'latestMatches'));
     }
     public function show($id)
     {

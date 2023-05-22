@@ -16,7 +16,9 @@ class ScheduleController extends Controller
     public function index()
     {
         $matches = Match::all();
-        return view('frontend.schedule', compact('matches'));
+        $latestMatches = Match::orderBy('created_at', 'desc')->take(4)->get(['result']);
+        
+        return view('frontend.schedule', compact('matches', 'latestMatches'));
     }
 
 

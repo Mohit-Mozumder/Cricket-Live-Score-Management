@@ -19,7 +19,7 @@ class CreateMatchesTable extends Migration
             $table->integer('team_2');
             $table->string('schedule');
             $table->string('description');
-            $table->string('result');
+            $table->json_encode('result');
             $table->string('video')->nullable();
             $table->string('venue');
             $table->timestamps();

@@ -37,7 +37,7 @@
                                 
                                 <div class="form-group">
                                     <label>Batting Team Name</label><br>
-                                    <select class="form-select" name="batting_team_id">
+                                    <select class="form-select" id="batting_team" name="batting_team_id">
                                         <option value="{{ $match->team_1_object->id }}" {{ $getLastRow->batting_team_id == $match->team_1_object->id ? 'selected' : '' }}>
                                             {{ $match->team_1_object->name }}
                                         </option>
@@ -177,18 +177,29 @@
 @section('run_custom_jquery')
 <script>
     $(document).ready(function() {
-        $('#batting_team').change(function() {
-            var selectedTeam = $(this).val();
-            var team1Overs = "{{ $team1Overs }}";
-            var team2Overs = "{{ $team2Overs }}";
+        // Get the selected team ID
+        var selectedTeam = $("#batting_team").val();
+        var team1Overs = "{{ $team1Overs }}";
+        var team2Overs = "{{ $team2Overs }}";
 
+        // Set the initial over value based on the selected team
+        if (selectedTeam == "{{ $match->team_2_object->id }}") {
+            $("#over").val(team2Overs);
+        } else {
+            $("#over").val(team1Overs);
+        }
+
+        // Handle the change event of the batting team select
+        $("#batting_team").change(function() {
+            var selectedTeam = $(this).val();
             if (selectedTeam == "{{ $match->team_2_object->id }}") {
-                $('#over').val(team2Overs);
+                $("#over").val(team2Overs);
             } else {
-                $('#over').val(team1Overs);
+                $("#over").val(team1Overs);
             }
         });
     });
 </script>
+
 
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\News;
+use App\Models\Match;
 
 class NewsesController extends Controller
 {
@@ -15,9 +16,12 @@ class NewsesController extends Controller
     public function index()
     {
         $news = News::all();
-        return view('frontend.news', compact('news'));
+    
+        $latestMatches = Match::orderBy('created_at', 'desc')->take(4)->get(['result']);
+    
+        return view('frontend.news', compact('news', 'latestMatches'));
+    }
+
+    
     }
    
-
-
-}

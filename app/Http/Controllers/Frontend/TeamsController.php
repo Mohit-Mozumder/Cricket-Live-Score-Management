@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Team;
+use App\Models\Match;
+
 
 class TeamsController extends Controller
 {
@@ -15,6 +17,9 @@ class TeamsController extends Controller
     public function index()
     {
         $teams = Team::all();
-        return view('frontend.team', compact('teams'));
+
+        $latestMatches = Match::orderBy('created_at', 'desc')->take(4)->get(['result']);
+    
+        return view('frontend.team', compact('teams', 'latestMatches'));
     }
 }

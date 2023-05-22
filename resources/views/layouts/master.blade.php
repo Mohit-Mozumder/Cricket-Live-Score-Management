@@ -41,7 +41,7 @@
     <div id="headerMain">
         <div id="headerMainSec">
             <div id="btn">
-            <button onclick="location.href='{{ url('/') }}'">T20wc2022</button>
+                <button onclick="location.href='{{ url('/') }}'">Cricket365</button>
                 <button onclick="location.href='{{ url('/') }}'">Home</button>
                 <button onclick="location.href='{{ url('schedule') }}'">Schedule</button>
                 <button onclick="location.href='{{ url('team') }}'">Team</button>
@@ -53,21 +53,23 @@
             <div id="headermaininner">
                 <div id="card1" class="card">
                     <div id="cardInner">
-                        <div>
-                            <h5 style="margin: 0px 15px 0px 0px;color: rgb(0, 0, 0);" id="type">Live</h5>
-                        </div>
-                        <div>
-                            <h5 style="margin: 3px 15px 0px 0px;font-size: .7rem;color: rgb(151, 149, 149);" id="vs">
-                                <span style="color: black;">T20 .</span> Bangladesh vs India
-                            </h5>
-                        </div>
-                        <div class="iplTeamName">
-                            <h5 style="margin: 15px 15px 0px 0px;font-size: .7rem;" id="teamf"><b>Bangladesh- 115/6
-                                    (18.3 overs)</b> </h5>
-                        </div>
-                        <div class="iplTeamName">
-                            <h5 style="margin: 15px 15px 0px 0px;font-size: .7rem;" id="teams"><b>India- yet to bat</b>
-                            </h5>
+                        <div class="container">
+                            <h2>Live Score</h2>
+                            <ul>
+                                @foreach ($latestMatches as $match)
+                                @php
+                                    $result = json_decode($match->result, true);
+                                    $team1Data = $result['team_1'];
+                                    $team2Data = $result['team_2'];
+                                @endphp
+                                <li>
+                                    <p>
+                                        {{ $team1Data['name'] }} ({{ $team1Data['total_score'] }}/{{ $team1Data['wickets'] }}) ({{ $team1Data['overs'] }} overs)<br>
+                                        {{ $team2Data['name'] }} ({{ $team2Data['total_score'] }}/{{ $team2Data['wickets'] }}) ({{ $team2Data['overs'] }} overs)
+                                    </p>
+                                </li>
+                            @endforeach
+                            </ul>
                         </div>
                         <!-- <div style="width: 100%; background-color: rgb(211, 208, 208);">
                         <h5 style="margin: 5px 15px 0px 0px;font-size: .7rem;" id="teams">Mumbai Indians won the

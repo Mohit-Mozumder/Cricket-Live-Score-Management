@@ -65,6 +65,28 @@ class ScoreController extends Controller
             ->where('batting_team_id', $match->team_2)
             ->whereNotNull('out_player_id')
             ->count();
+
+            $team1Name = $teams->firstWhere('id', $match->team_1)->name;
+            $team2Name = $teams->firstWhere('id', $match->team_2)->name;
+            
+            $result = [
+                'team_1' => [
+                    'name' => $team1Name,
+                    'total_score' => $team1TotalScore,
+                    'wickets' => $team1Wickets,
+                    'overs' => $team1Overs,
+                ],
+                'team_2' => [
+                    'name' => $team2Name,
+                    'total_score' => $team2TotalScore,
+                    'wickets' => $team2Wickets,
+                    'overs' => $team2Overs,
+                ],
+            ];
+            
+            $match->result = json_encode($result);
+            $match->save();
+            
     
         return view('admin.scores.create', compact(
             'match',

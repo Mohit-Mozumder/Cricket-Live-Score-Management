@@ -17,7 +17,7 @@
 
     <!-- Divider -->
     <hr class="sidebar-divider">
-
+    @if(auth()->user()->role_name === 'admin')
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
@@ -32,8 +32,7 @@
             </div>
         </div>
     </li>
-
-    <!-- Nav Item - Utilities Collapse Menu -->
+  
 
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
@@ -48,7 +47,7 @@
             </div>
         </div>
     </li>
-
+   
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true"
             aria-controls="collapseFive">
@@ -62,26 +61,28 @@
             </div>
         </div>
     </li>
-
+    @endif
     <!-- Divider -->
     <hr class="sidebar-divider">
 
     <!-- Heading -->
 
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true"
-            aria-controls="collapseThree">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>News</span>
-        </a>
-        <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ route('admin.news.create') }}">Add New News</a>
-                <a class="collapse-item" href="{{ route('admin.news.index') }}">View News</a>
+    @if(auth()->user()->role_name === 'admin' || auth()->user()->role_name === 'manager')
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true"
+                aria-controls="collapseThree">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>News</span>
+            </a>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ route('admin.news.create') }}">Add New News</a>
+                    <a class="collapse-item" href="{{ route('admin.news.index') }}">View News</a>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
+    @endif
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
