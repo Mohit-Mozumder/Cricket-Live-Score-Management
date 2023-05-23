@@ -16,6 +16,7 @@ class MatchController extends Controller
     public function index()
     {
         $matches = Match::all();
+
         return view('admin.matches.index', compact('matches'));
     }
 
@@ -74,7 +75,8 @@ class MatchController extends Controller
     public function edit($id)
     {
         $matches = Match::find($id);
-        return view('admin.matches.edit', compact('matches'));
+        $teams = Team::all();
+        return view('admin.matches.edit', compact('matches','teams'));
     }
 
     /**

@@ -69,6 +69,12 @@ class ScoreController extends Controller
             $team1Name = $teams->firstWhere('id', $match->team_1)->name;
             $team2Name = $teams->firstWhere('id', $match->team_2)->name;
             
+
+            $battingTeamId = $getLastRow ? $getLastRow->batting_team_id : null;
+            $strikePlayerId = $getLastRow ? $getLastRow->strike_player_id : null;
+            $nonStrikePlayerId = $getLastRow ? $getLastRow->non_strike_player_id : null;
+            $bowlerId = $getLastRow ? $getLastRow->bowler_id : null;
+
             $result = [
                 'team_1' => [
                     'name' => $team1Name,
@@ -98,7 +104,11 @@ class ScoreController extends Controller
             'team2TotalScore',
             'team1Wickets',
             'team2Wickets',
-            'getLastRow'
+            'getLastRow',
+            'battingTeamId',
+            'strikePlayerId',
+            'nonStrikePlayerId',
+            'bowlerId'
         ));
     }
     

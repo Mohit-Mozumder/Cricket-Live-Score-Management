@@ -38,36 +38,40 @@
                                 <div class="form-group">
                                     <label>Batting Team Name</label><br>
                                     <select class="form-select" id="batting_team" name="batting_team_id">
-                                        <option value="{{ $match->team_1_object->id }}" {{ $getLastRow->batting_team_id == $match->team_1_object->id ? 'selected' : '' }}>
+                                        <option value="{{ $match->team_1_object->id }}" {{ $battingTeamId == $match->team_1 ? 'selected' : '' }}>
                                             {{ $match->team_1_object->name }}
                                         </option>
-                                        <option value="{{ $match->team_2_object->id }}" {{ $getLastRow->batting_team_id == $match->team_2_object->id ? 'selected' : '' }}>
+                                        <option value="{{ $match->team_2_object->id }}" {{ $battingTeamId == $match->team_2 ? 'selected' : '' }}>
                                             {{ $match->team_2_object->name }}
                                         </option>
                                     </select>
                                 </div>
+                                
 
                                 <div class="form-group">
-                                    <label>Striker Player Name</label><br>
-                                    <select class="form-select" name="strike_player_id">
+                                    <label>Strike Player</label><br>
+                                    <select class="form-select" id="strike_player" name="strike_player_id">
                                         @foreach($players as $player)
-                                        <option value="{{ $player->id }}" {{ $getLastRow->strike_player_id == $player->id ? 'selected' : '' }}>
-                                            {{ $player->name }}
-                                        </option>
+                                            <option value="{{ $player->id }}" {{ $strikePlayerId == $player->id ? 'selected' : '' }}>
+                                                {{ $player->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 
+                                
+                                
                                 <div class="form-group">
-                                    <label>Non Striker Player Name</label><br>
-                                    <select class="form-select" name="non_strike_player_id">
+                                    <label>Non-Strike Player</label><br>
+                                    <select class="form-select" id="non_strike_player" name="non_strike_player_id">
                                         @foreach($players as $player)
-                                        <option value="{{ $player->id }}" {{ $getLastRow->non_strike_player_id == $player->id ? 'selected' : '' }}>
-                                            {{ $player->name }}
-                                        </option>
+                                            <option value="{{ $player->id }}" {{ $nonStrikePlayerId == $player->id ? 'selected' : '' }}>
+                                                {{ $player->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
+                                
                                 
 
                                 <div class="form-group">
@@ -79,7 +83,7 @@
                                     <label>Bowler Name</label><br>
                                     <select class="form-select" name="bowler_id">
                                         @foreach($players as $player)
-                                        <option value="{{ $player->id }}" {{ $getLastRow->bowler_id == $player->id ? 'selected' : '' }}>
+                                        <option value="{{ $player->id }}" {{ $bowlerId == $player->id ? 'selected' : '' }}>
                                             {{ $player->name }}
                                         </option>
                                         @endforeach

@@ -1,5 +1,5 @@
 @extends('layouts.admin_master')
-@section('title')Edit Teams @endsection
+@section('title', 'Edit Match')
 @section('content')
 <div id="wrapper">
 
@@ -21,25 +21,49 @@
             <div class="container-fluid">
                 @include('admin.includes.flash_message')
                 <!-- Page Heading -->
-                <h1 class="h3 mb-4 text-gray-800">Edit team</h1>
+                <h1 class="h3 mb-4 text-gray-800">Edit Match</h1>
                 <div class="card-body">
                     <div class="row justify-content-center">
                         <div class="col-md-12">
-                            <form action="{{ route('admin.matches.update', $team->id) }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('admin.matches.update', $matches->id) }}" method="post" enctype="multipart/form-data">
                                 @csrf
-                                @method('put')
+                                @method('PUT')
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Name</label>
-                                    <input name="name" type="text" class="form-control" value="{{ old('name', $team->name) }}">
+                                    <label>Team 1</label>
+                                    <select class="form-select" name="team_1">
+                                        @foreach($teams as $team)
+                                        <option value="{{ $team->id }}" {{ $team->id == $matches->team_1 ? 'selected' : '' }}>{{ $team->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Point</label>
-                                    <input name="point" type="text" class="form-control" value="{{ old('point', $team->point) }}">
+                                    <label>Team 2</label>
+                                    <select class="form-select" name="team_2">
+                                        @foreach($teams as $team)
+                                        <option value="{{ $team->id }}" {{ $team->id == $matches->team_2 ? 'selected' : '' }}>{{ $team->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Schedule</label>
+                                    <input name="schedule" type="text" class="form-control" value="{{ $matches->schedule }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Latest Squad</label>
-                                    <input name="latest_squad" type="text" class="form-control"
-                                    value="{{ old('latest_squad', $team->latest_squad) }}">
+                                    <label>Description</label>
+                                    <input name="description" type="text" class="form-control" value="{{ $matches->description }}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Result</label>
+                                    <input name="result" type="text" class="form-control" value="{{ $matches->result }}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Video</label>
+                                    <input name="video" type="text" class="form-control" value="{{ $matches->video }}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Venue</label>
+                                    <input name="venue" type="text" class="form-control" value="{{ $matches->venue }}">
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-info float-right">Update</button>

@@ -51,106 +51,42 @@
         
             </div>
             <div id="headermaininner">
-                <div id="card1" class="card">
-                    <div id="cardInner">
-                        <div class="container">
-                            <h2>Live Score</h2>
-                            <ul>
-                                @foreach ($latestMatches as $match)
-                                @php
-                                    $result = json_decode($match->result, true);
-                                    $team1Data = $result['team_1'];
-                                    $team2Data = $result['team_2'];
-                                @endphp
-                                <li>
-                                    <p>
-                                        {{ $team1Data['name'] }} ({{ $team1Data['total_score'] }}/{{ $team1Data['wickets'] }}) ({{ $team1Data['overs'] }} overs)<br>
-                                        {{ $team2Data['name'] }} ({{ $team2Data['total_score'] }}/{{ $team2Data['wickets'] }}) ({{ $team2Data['overs'] }} overs)
-                                    </p>
-                                </li>
-                            @endforeach
-                            </ul>
+                @if ($latestMatches->isNotEmpty())
+                    @foreach ($latestMatches->reverse() as $match)
+                        @php
+                            $result = json_decode($match->result, true);
+                            $team1Data = $result['team_1'] ?? ['name' => '', 'total_score' => 0, 'wickets' => 0, 'overs' => 0];
+                            $team2Data = $result['team_2'] ?? ['name' => '', 'total_score' => 0, 'wickets' => 0, 'overs' => 0];
+                        @endphp
+                        <div id="card1" class="card">
+                            <div id="cardInner">
+                                <div class="container">
+                                    <h4>Live Score</h4>
+                                    <ul>
+                                        <li>
+                                            <p>
+                                                {{ $team1Data['name'] }} ({{ $team1Data['total_score'] }}/{{ $team1Data['wickets'] }}) ({{ $team1Data['overs'] }} overs)<br>
+                                                {{ $team2Data['name'] }} ({{ $team2Data['total_score'] }}/{{ $team2Data['wickets'] }}) ({{ $team2Data['overs'] }} overs)
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                        <!-- <div style="width: 100%; background-color: rgb(211, 208, 208);">
-                        <h5 style="margin: 5px 15px 0px 0px;font-size: .7rem;" id="teams">Mumbai Indians won the
-                            match</h5>
-                    </div> -->
-                    </div>
-                </div>
-                <div id="vr1" class="verticalLine"></div>
-                <div id="card2" class="card">
-                    <div id="cardInner">
-                        <div>
-                            <h5 style="margin: 0px 15px 0px 0px;color: rgb(31, 17, 17);" id="type1">RESULT</h5>
-                        </div>
-                        <div>
-                            <h5 style="margin: 3px 15px 0px 0px;font-size: .7rem;color: rgb(151, 149, 149);" id="vs">
-                                <span style="color: black;">T20 .</span> Afganistan Vs Sri-Lanka
-                            </h5>
-                        </div>
-                        <div class="iplTeamName">
-                            <h5 style="margin: 15px 15px 0px 0px;font-size: .7rem;" id="teamf1"><b>Afg- 158/6 (20
-                                    overs)</b></h5>
-                        </div>
-                        <div class="iplTeamName">
-                            <h5 style="margin: 15px 15px 0px 0px;font-size: .7rem;" id="teams1"><b>Sri- 115/10 (18.3
-                                    overs)</b>
-                            </h5>
-                        </div>
-                        <div style="width: 100%; background-color: rgb(211, 208, 208);">
-                            <h5 style="margin: 5px 15px 0px 0px;font-size: .7rem;" id="teams1"><b>Afganistan won the
-                                    Match</b></h5>
+                    @endforeach
+                @else
+                    <div id="card1" class="card">
+                        <div id="cardInner">
+                            <div class="container">
+                                <h2>Live Score</h2>
+                                <p>No live matches available.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div id="vr2" class="verticalLine"></div>
-                <div id="card3" class="card">
-                    <div id="cardInner">
-                        <div>
-                            <h5 style="margin: 0px 15px 0px 0px;color: rgb(36, 26, 26);" id="type2">International</h5>
-                        </div>
-                        <div>
-                            <h5 style="margin: 3px 15px 0px 0px;font-size: .7rem;color: rgb(151, 149, 149);" id="vs">
-                                <span style="color: black;">T20 .</span>
-                            </h5>
-                        </div>
-                        <div class="iplTeamName">
-                            <h5 style="margin: 15px 15px 0px 0px;font-size: .7rem;" id="teamf2"><b>Bangladesh</b>
-                                <strong>vs</strong> <b>England</b>
-                            </h5>
-                        </div>
-                        <div class="iplTeamName">
-                            <h5 style="margin: 15px 15px 0px 0px;font-size: .7rem;" id="teams2"><b>Today, 02:00 PM</b>
-                            </h5>
-                        </div>
-
-                    </div>
-                </div>
-                <div id="vr3" class="verticalLine"></div>
-                <div id="card3" class="card">
-                    <div id="cardInner">
-                        <div>
-                            <h5 style="margin: 0px 15px 0px 0px;color: rgb(36, 26, 26);" id="type2">Upcomming</h5>
-                        </div>
-                        <div>
-                            <h5 style="margin: 3px 15px 0px 0px;font-size: .7rem;color: rgb(151, 149, 149);" id="vs">
-                                <span style="color: black;">T20 .</span>
-                            </h5>
-                        </div>
-                        <div class="iplTeamName">
-                            <h5 style="margin: 15px 15px 0px 0px;font-size: .7rem;" id="teamf2"><b>Australia</b>
-                                <strong>vs</strong> <b>new zealand</b>
-                            </h5>
-                        </div>
-                        <div class="iplTeamName">
-                            <h5 style="margin: 15px 15px 0px 0px;font-size: .7rem;" id="teams2"><b>Today, 08:00 PM</b>
-                            </h5>
-                        </div>
-
-                    </div>
-                </div>
+                @endif
             </div>
-
+            
+            
         </div>
     </div>
 
